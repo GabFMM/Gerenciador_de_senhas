@@ -93,6 +93,16 @@ void Menu::configurarAC()
     // --
     connect(ui->DescricaoAC, SIGNAL(textChanged()), this, SLOT(limitarTexto()));
     ui->DescricaoAC->setPlaceholderText("Máximo de 100 caracteres.");
+
+    // limpo o combo box para caso de atualizar o BD
+    ui->TagAC->clear();
+
+    // preenche o combo box com as tags existentes
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    std::vector<QString> tags = conexao->getTags(usuario);
+    size_t tam = tags.size();
+    for(size_t i = 0; i < tam; i++)
+        ui->TagAC->addItem(tags[i]);
 }
 
 // Configura o widget referente a opcao adicionar conta (AC)
@@ -334,8 +344,19 @@ void Menu::on_BotaoConfirmarAT_clicked()
         return;
     }
 
-    // Adiciono tag no banco de dados e atualizo os widgets afetados pela tag
+    // Verifico se a tag existe
     ConexaoBD* conexao = ConexaoBD::getInstancia();
+    std::vector<QString> tags = conexao->getTags(usuario);
+    size_t tam = tags.size();
+    for(size_t i = 0; i < tam; i++){
+        if(tags[i] == ui->NomeTagNova->text()){
+            QString saida = "Tag " + ui->NomeTagNova->text() + " já existe";
+            QMessageBox::warning(this, "Erro", saida);
+            return;
+        }
+    }
+
+    // Adiciono tag no banco de dados e atualizo os widgets afetados pela tag
     if(!conexao->adicionarTag(usuario, ui->NomeTagNova->text())){
         QMessageBox::warning
         (

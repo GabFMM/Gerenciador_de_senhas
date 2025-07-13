@@ -61,7 +61,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>6</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="Padrao"/>
      <widget class="QWidget" name="MostrarContas">
