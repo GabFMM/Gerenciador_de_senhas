@@ -126,17 +126,17 @@ const bool ConexaoBD::removerTag(QString usuario, QString tag)
     QSqlQuery query(BD);
 
     query.prepare
-        (R"(
-        INSERT INTO Tags (nome, usuario)
-        VALUES (?, ?);
+    (R"(
+        DELETE FROM Tags
+        WHERE Usuario = ? AND Nome = ?
     )");
 
-    query.addBindValue(tag);
     query.addBindValue(usuario);
+    query.addBindValue(tag);
 
     if(!query.exec())
     {
-        qDebug() << "Erro na execução da query em adicionarTag de ConexaoBD: " << query.lastError().text();
+        qDebug() << "Erro na execução da query em removerTag de ConexaoBD: " << query.lastError().text();
         return false;
     }
 

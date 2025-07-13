@@ -38,6 +38,7 @@ public:
     void configurarEC();
     void configurarAT();
     void configurarRT();
+    void configurarWidgets();
     void gerarSenha();
 
 protected:

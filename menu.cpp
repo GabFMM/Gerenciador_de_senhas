@@ -43,7 +43,7 @@ Menu::Menu(QWidget *parent, QString usuario)
     setWindowTitle("Menu");
     setMouseTracking(true); // importante para o temporizador da janela
     ui->stackedWidget->setCurrentIndex(0);
-    configurarAC();
+    configurarWidgets();
 }
 
 Menu::~Menu()
@@ -132,11 +132,22 @@ void Menu::configurarRT()
     // limpo o combo box para caso haja atualizacoes no banco de dados
     ui->SelecTagRT->clear();
 
+    // preencho o texto padrao do combo box
+    ui->SelecTagRT->addItem("Selecione uma tag");
+
     // preencho o combo box com as tags existentes
     std::vector<QString> tags = conexao->getTags(usuario);
     size_t tam = tags.size();
     for(size_t i = 0; i < tam; i++)
-        ui->TagsExistentes->addItem(tags[i + 1]);
+        ui->SelecTagRT->addItem(tags[i]);
+}
+
+void Menu::configurarWidgets()
+{
+    configurarAC();
+    configurarEC();
+    configurarAT();
+    configurarRT();
 }
 
 // cria uma senha aleatoria a partir das preferencias do usuario
@@ -330,7 +341,7 @@ void Menu::on_BotaoConfirmarAT_clicked()
         (
             this,
             "Erro",
-            "Não foi possível adicionar nova tag. \nTente novamente mais tarde."
+            "Não foi possível adicionar nova tag"
         );
     }
     else{
@@ -341,10 +352,7 @@ void Menu::on_BotaoConfirmarAT_clicked()
             "Adicionado tag " + ui->NomeTagNova->text()
         );
 
-        configurarAT();
-        configurarAC();
-        configurarEC();
-        configurarRT();
+        configurarWidgets();
     }
 }
 
@@ -357,6 +365,27 @@ void Menu::on_BotaoConfirmaRT_clicked()
         return;
     }
 
+    QString nomeTag = ui->SelecTagRT->currentText();
 
+    // Removo a tag e atualizo os widgets que são afetados por ela
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    if(!conexao->removerTag(usuario, ui->SelecTagRT->currentText())){
+        QMessageBox::warning
+            (
+                this,
+                "Erro",
+                "Não foi possível remover tag"
+                );
+    }
+    else{
+        QMessageBox::information
+            (
+                this,
+                "Sucesso",
+                "Removido tag " + nomeTag
+                );
+
+        configurarWidgets();
+    }
 }
 
