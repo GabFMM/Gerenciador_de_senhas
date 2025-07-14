@@ -137,6 +137,29 @@ const bool ConexaoBD::verificarUsuario(QString usuario)
     return query.next();
 }
 
+const bool ConexaoBD::existeTituloConta(QString usuario, QString titulo)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Titulo FROM Contas
+        WHERE Usuario = ? AND Titulo = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(titulo);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em existeTituloConta de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    // retorna true se encontrar o titulo
+    return query.next();
+}
+
 const bool ConexaoBD::adicionarConta(QString usuario, QString titulo, QString senha, QString descricao, QString tag)
 {
     // Gero um nonce

@@ -40,6 +40,7 @@ public:
 
     const bool verificarSenha(QString usuario, QString senha);
     const bool verificarUsuario(QString usuario);
+    const bool existeTituloConta(QString usuario, QString titulo);
     const bool adicionarConta(QString usuario, QString titulo, QString senha, QString descricao = "", QString tag = "");
     std::vector<QString> getTags(QString usuario);
     const bool adicionarTag(QString usuario, QString tag);

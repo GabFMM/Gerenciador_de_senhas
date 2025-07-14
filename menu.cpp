@@ -255,8 +255,14 @@ void Menu::on_BotaoConfirmarAC_clicked()
         return;
     }
 
-    // Adiciono no banco de dados
+    // Verifico se o titulo existe no BD
     ConexaoBD* conexao = ConexaoBD::getInstancia();
+    if(conexao->existeTituloConta(usuario, ui->TituloAC->text())){
+        QMessageBox::warning(this, "Erro", "Título ja existe em outra conta");
+        return;
+    }
+
+    // Adiciono no banco de dados
     if(!conexao->adicionarConta(usuario, ui->TituloAC->text(), ui->SenhaAC->text(), ui->DescricaoAC->toPlainText(), ui->TagAC->currentText())){
         QMessageBox::warning
             (
