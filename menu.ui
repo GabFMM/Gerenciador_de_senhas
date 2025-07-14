@@ -61,7 +61,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="Padrao"/>
      <widget class="QWidget" name="MostrarContas">
@@ -110,8 +110,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>110</width>
-            <height>32</height>
+            <width>350</width>
+            <height>199</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -662,6 +662,48 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboBox</tabstop>
+  <tabstop>TituloAC</tabstop>
+  <tabstop>SenhaAC</tabstop>
+  <tabstop>DescricaoAC</tabstop>
+  <tabstop>TagAC</tabstop>
+  <tabstop>BotaoConfirmarAC</tabstop>
+  <tabstop>TagsExistentes</tabstop>
+  <tabstop>NomeTagNova</tabstop>
+  <tabstop>BotaoConfirmarAT</tabstop>
+  <tabstop>SelecTagEC_2</tabstop>
+  <tabstop>SelecTituloEC_2</tabstop>
+  <tabstop>BotaoFiltrarMC</tabstop>
+  <tabstop>BotaoFiltrarEC</tabstop>
+  <tabstop>TituloEC</tabstop>
+  <tabstop>SenhaEC</tabstop>
+  <tabstop>DescricaoEC</tabstop>
+  <tabstop>TagEC</tabstop>
+  <tabstop>BotaoConfirmaEC</tabstop>
+  <tabstop>SelecTagRC</tabstop>
+  <tabstop>SelecTituloRC</tabstop>
+  <tabstop>BotaoFiltrarRC</tabstop>
+  <tabstop>TituloRC</tabstop>
+  <tabstop>SenhaRC</tabstop>
+  <tabstop>DescricaoRC</tabstop>
+  <tabstop>TagRC</tabstop>
+  <tabstop>BotaoConfirmaRC</tabstop>
+  <tabstop>spinBox</tabstop>
+  <tabstop>toolButton_2</tabstop>
+  <tabstop>checkBoxabc</tabstop>
+  <tabstop>checkBoxABC</tabstop>
+  <tabstop>checkBox123</tabstop>
+  <tabstop>checkBoxExtras</tabstop>
+  <tabstop>SenhaGerada</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>SelecTituloEC</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>SelecTagEC</tabstop>
+  <tabstop>SelecTagRT</tabstop>
+  <tabstop>BotaoConfirmaRT</tabstop>
+  <tabstop>BotaoSair</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
