@@ -14,9 +14,65 @@ ConexaoBD *ConexaoBD::getInstancia()
 void ConexaoBD::destruirInstancia()
 {
     if(instancia != nullptr){
+        // Apaga a chave
+        //clearKey();
+
         delete instancia;
         instancia = nullptr;
     }
+}
+
+void ConexaoBD::setKey(QString usuario, QString senha)
+{
+    QSqlQuery query(BD);
+
+    // Procuro o salt a partir do nome de usuario
+    // Sem risco do nome nao existir
+    query.prepare
+    (R"(
+        SELECT Salt FROM Usuarios
+        WHERE Nome = ?
+    )");
+
+    query.addBindValue(usuario);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em setKey de ConexaoBD: " << query.lastError().text();
+        return;
+    }
+
+    query.next();
+
+    // Recupero a chave
+    size_t key_len = 32;
+    unsigned long long opslimit = crypto_pwhash_OPSLIMIT_INTERACTIVE;
+    size_t memlimit = crypto_pwhash_MEMLIMIT_INTERACTIVE;
+    int alg = crypto_pwhash_ALG_DEFAULT;
+
+    key.resize(key_len);
+
+    QByteArray password = senha.toUtf8();
+    QByteArray saltArray = query.value(0).toByteArray();
+    const unsigned char* salt = reinterpret_cast<const unsigned char*>(saltArray.constData());
+
+    if (crypto_pwhash(
+            key.data(), key.size(),
+            password.constData(),
+            password.size(),
+            salt,
+            opslimit,
+            memlimit,
+            alg
+            ) != 0) {
+        qDebug() << "Erro ao derivar a chave com crypto_pwhash.";
+        return;
+    }
+}
+
+void ConexaoBD::clearKey()
+{
+    sodium_memzero(key.data(), key.size());
 }
 
 const bool ConexaoBD::verificarSenha(QString usuario, QString senha)
@@ -46,7 +102,17 @@ const bool ConexaoBD::verificarSenha(QString usuario, QString senha)
     const char* hash = hashStr.toUtf8().constData();
 
     // inverto, pois a função abaixo tem retorno 0 para sucesso
-    return !crypto_pwhash_str_verify(hash, senha.toUtf8().constData(), senha.size());
+    if(!crypto_pwhash_str_verify(hash, senha.toUtf8().constData(), senha.size())){
+        // Caso outro usuario faça login em seguida, sem fechar o programa
+        clearKey();
+
+        // Recupero a chave do usuario atual
+        setKey(usuario, senha);
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 const bool ConexaoBD::verificarUsuario(QString usuario)
@@ -69,6 +135,59 @@ const bool ConexaoBD::verificarUsuario(QString usuario)
 
     // retorna true se encontrar o nome de usuario
     return query.next();
+}
+
+const bool ConexaoBD::adicionarConta(QString usuario, QString titulo, QString senha, QString descricao, QString tag)
+{
+    // Gero um nonce
+    unsigned char nonce[crypto_secretbox_NONCEBYTES];
+    randombytes_buf(nonce, sizeof(nonce));
+
+    // Criptografo a senha
+    size_t cipher_len = crypto_secretbox_MACBYTES + senha.size();
+    unsigned char ciphertext[cipher_len];
+
+    QByteArray plainTextArray = senha.toUtf8();
+
+    if (crypto_secretbox_easy(
+            ciphertext,
+            reinterpret_cast<const unsigned char*>(plainTextArray.constData()),
+            plainTextArray.size(),
+            nonce,
+            key.data()) != 0) {
+        qDebug() << "Erro na criptografia da senha.";
+        return false;
+    }
+
+    // converto o nonce para o tipo aceito no BD (BLOB)
+    QByteArray nonceArray(reinterpret_cast<const char*>(nonce), crypto_secretbox_NONCEBYTES);
+
+    // converto o ciphertext para o tipo aceito no BD (BLOB)
+    QByteArray cipherTextArray(reinterpret_cast<const char*>(ciphertext), cipher_len);
+
+    // Salvo no BD
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        INSERT INTO Contas (Usuario, Titulo, Senha, Nonce, Descricao, Tag)
+        VALUES (?, ?, ?, ?, ?, ?);
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(titulo);
+    query.addBindValue(cipherTextArray);
+    query.addBindValue(nonceArray);
+    query.addBindValue(descricao);
+    query.addBindValue(tag);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em adicionarConta de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    return true;
 }
 
 std::vector<QString> ConexaoBD::getTags(QString usuario)

@@ -254,6 +254,27 @@ void Menu::on_BotaoConfirmarAC_clicked()
         QMessageBox::warning(this, "Erro", "Campo senha não preenchido");
         return;
     }
+
+    // Adiciono no banco de dados
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    if(!conexao->adicionarConta(usuario, ui->TituloAC->text(), ui->SenhaAC->text(), ui->DescricaoAC->toPlainText(), ui->TagAC->currentText())){
+        QMessageBox::warning
+            (
+                this,
+                "Erro",
+                "Não foi possível adicionar conta"
+                );
+    }
+    else{
+        QMessageBox::information
+            (
+                this,
+                "Sucesso",
+                "Adicionada conta " + ui->TituloAC->text()
+                );
+
+        configurarWidgets();
+    }
 }
 
 // Botao confirmar de editar conta (EC)

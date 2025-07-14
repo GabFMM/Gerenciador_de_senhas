@@ -2,6 +2,7 @@
 
 // Qt
 #include <QApplication>
+#include <QSqlDatabase>
 
 // libsodium
 #include <sodium.h>
