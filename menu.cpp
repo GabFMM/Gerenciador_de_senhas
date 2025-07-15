@@ -105,7 +105,7 @@ void Menu::configurarAC()
         ui->TagAC->addItem(tags[i]);
 }
 
-// Configura o widget referente a opcao adicionar conta (AC)
+// Configura o widget referente a opcao editar conta (EC)
 void Menu::configurarEC()
 {
     ui->TituloEC->setMaxLength(20);
@@ -116,6 +116,41 @@ void Menu::configurarEC()
     // --
     connect(ui->DescricaoEC, SIGNAL(textChanged()), this, SLOT(limitarTexto()));
     ui->DescricaoEC->setPlaceholderText("Máximo de 100 caracteres.");
+}
+
+// Configura o widget referente a opcao remover conta (RC)
+void Menu::configurarRC()
+{
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+
+    // limpo as caixas de texto
+    ui->TituloRC->clear();
+    ui->SenhaRC->clear();
+    ui->DescricaoRC->clear();
+
+    // limpo os combos box's para caso haja atualizacoes no banco de dados
+    ui->TagRC->clear();
+    ui->SelecTituloRC->clear();
+    ui->SelecTagRC->clear();
+
+    // Preencho os combos box's das tags existentes
+    ui->SelecTagRC->addItem("Selecione uma tag:");
+
+    std::vector<QString> tags = conexao->getTags(usuario);
+    size_t tam = tags.size();
+    for(size_t i = 0; i < tam; i++){
+        ui->SelecTagRC->addItem(tags[i]);
+        ui->TagRC->addItem(tags[i]);
+    }
+
+    // Preencho o combo box do titulo das contas
+    ui->SelecTituloRC->addItem("Selecione um título de uma conta:");
+
+    std::vector<QString> titulos = conexao->getTituloContas(usuario);
+    tam = titulos.size();
+    for(size_t i = 0; i < tam; i++){
+        ui->SelecTituloRC->addItem(titulos[i]);
+    }
 }
 
 // Configura o widget referente a opcao adicionar tag (AT)
@@ -156,6 +191,7 @@ void Menu::configurarWidgets()
 {
     configurarAC();
     configurarEC();
+    configurarRC();
     configurarAT();
     configurarRT();
 }
@@ -435,5 +471,27 @@ void Menu::on_BotaoConfirmaRT_clicked()
 
         configurarWidgets();
     }
+}
+
+void Menu::on_SelecTagRC_currentTextChanged(const QString &arg1)
+{
+    ui->SelecTituloRC->clear();
+    ui->SelecTituloRC->addItem("Selecione um título de uma conta:");
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    std::vector<QString> titulos;
+
+    // Texto padrao, entao sem filtro
+    if(!ui->SelecTagRC->currentIndex()){
+        titulos = conexao->getTituloContas(usuario);
+    }
+    else{
+        // filtro os titulos com a tag selecionada
+        titulos = conexao->getTituloContas(usuario, arg1);
+    }
+
+    size_t tam = titulos.size();
+    for(size_t i = 0; i < tam; i++)
+        ui->SelecTituloRC->addItem(titulos[i]);
 }
 

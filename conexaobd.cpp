@@ -213,6 +213,11 @@ const bool ConexaoBD::adicionarConta(QString usuario, QString titulo, QString se
     return true;
 }
 
+const bool ConexaoBD::removerConta(QString usuario, QString titulo)
+{
+
+}
+
 std::vector<QString> ConexaoBD::getTags(QString usuario)
 {
     QSqlQuery query(BD);
@@ -239,6 +244,63 @@ std::vector<QString> ConexaoBD::getTags(QString usuario)
         tags.push_back(query.value(0).toString());
 
     return tags;
+}
+
+std::vector<QString> ConexaoBD::getTituloContas(QString usuario)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Titulo FROM Contas
+        WHERE Usuario = ?
+    )");
+
+    query.addBindValue(usuario);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getTituloContas de ConexaoBD: " << query.lastError().text();
+        std::vector<QString> erro;
+        erro.clear();
+        return erro;
+    }
+
+    std::vector<QString> titulos;
+
+    while(query.next())
+        titulos.push_back(query.value(0).toString());
+
+    return titulos;
+}
+
+std::vector<QString> ConexaoBD::getTituloContas(QString usuario, QString tag)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+        (R"(
+        SELECT Titulo FROM Contas
+        WHERE Usuario = ? AND Tag = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(tag);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getTituloContas de ConexaoBD: " << query.lastError().text();
+        std::vector<QString> erro;
+        erro.clear();
+        return erro;
+    }
+
+    std::vector<QString> titulos;
+
+    while(query.next())
+        titulos.push_back(query.value(0).toString());
+
+    return titulos;
 }
 
 const bool ConexaoBD::adicionarTag(QString usuario, QString tag)

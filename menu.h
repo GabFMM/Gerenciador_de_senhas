@@ -36,6 +36,7 @@ public:
 
     void configurarAC();
     void configurarEC();
+    void configurarRC();
     void configurarAT();
     void configurarRT();
     void configurarWidgets();
@@ -74,6 +75,8 @@ private slots:
     void on_BotaoConfirmarAT_clicked();
 
     void on_BotaoConfirmaRT_clicked();
+
+    void on_SelecTagRC_currentTextChanged(const QString &arg1);
 
 private:
     Ui::Menu *ui;

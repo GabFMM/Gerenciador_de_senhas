@@ -42,7 +42,10 @@ public:
     const bool verificarUsuario(QString usuario);
     const bool existeTituloConta(QString usuario, QString titulo);
     const bool adicionarConta(QString usuario, QString titulo, QString senha, QString descricao = "", QString tag = "");
+    const bool removerConta(QString usuario, QString titulo);
     std::vector<QString> getTags(QString usuario);
+    std::vector<QString> getTituloContas(QString usuario);
+    std::vector<QString> getTituloContas(QString usuario, QString tag);
     const bool adicionarTag(QString usuario, QString tag);
     const bool removerTag(QString usuario, QString tag);
 };
