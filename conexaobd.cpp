@@ -215,7 +215,24 @@ const bool ConexaoBD::adicionarConta(QString usuario, QString titulo, QString se
 
 const bool ConexaoBD::removerConta(QString usuario, QString titulo)
 {
+    QSqlQuery query(BD);
 
+    query.prepare
+    (R"(
+        DELETE FROM Contas
+        WHERE Usuario = ? AND Titulo = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(titulo);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em removerConta de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    return true;
 }
 
 std::vector<QString> ConexaoBD::getTags(QString usuario)
@@ -244,6 +261,31 @@ std::vector<QString> ConexaoBD::getTags(QString usuario)
         tags.push_back(query.value(0).toString());
 
     return tags;
+}
+
+QString ConexaoBD::getTag(QString usuario, QString titulo)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Tag FROM Contas
+        WHERE Usuario = ? AND Titulo = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(titulo);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getTag de ConexaoBD: " << query.lastError().text();
+        QString erro = " ";
+        return erro;
+    }
+
+    query.next();
+
+    return query.value(0).toString();
 }
 
 std::vector<QString> ConexaoBD::getTituloContas(QString usuario)
@@ -279,7 +321,7 @@ std::vector<QString> ConexaoBD::getTituloContas(QString usuario, QString tag)
     QSqlQuery query(BD);
 
     query.prepare
-        (R"(
+    (R"(
         SELECT Titulo FROM Contas
         WHERE Usuario = ? AND Tag = ?
     )");
@@ -301,6 +343,85 @@ std::vector<QString> ConexaoBD::getTituloContas(QString usuario, QString tag)
         titulos.push_back(query.value(0).toString());
 
     return titulos;
+}
+
+QString ConexaoBD::getDescricao(QString usuario, QString titulo)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Descricao FROM Contas
+        WHERE Usuario = ? AND Titulo = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(titulo);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getDescricao de ConexaoBD: " << query.lastError().text();
+        QString erro = " ";
+        return erro;
+    }
+
+    query.next();
+
+    return query.value(0).toString();
+}
+
+QString ConexaoBD::getSenhaConta(QString usuario, QString titulo)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Senha, Nonce FROM Contas
+        WHERE Usuario = ? AND Titulo = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(titulo);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getDescricao de ConexaoBD: " << query.lastError().text();
+        QString erro = " ";
+        return erro;
+    }
+
+    query.next();
+
+    // Recupero dados do BD
+    QByteArray cipherTextArray = query.value(0).toByteArray();
+    QByteArray nonceArray = query.value(1).toByteArray();
+
+    // Dados para descriptografia
+    const unsigned char* ciphertext = reinterpret_cast<const unsigned char*>(cipherTextArray.constData());
+    unsigned long long ciphertext_len = cipherTextArray.size();
+
+    const unsigned char* nonce = reinterpret_cast<const unsigned char*>(nonceArray.constData());
+
+    // O plaintext terá no máximo (ciphertext_len - MACBYTES) bytes
+    size_t plaintext_len = ciphertext_len - crypto_secretbox_MACBYTES;
+    QByteArray plainTextArray;
+    plainTextArray.resize(static_cast<int>(plaintext_len));
+
+    if (crypto_secretbox_open_easy(
+            reinterpret_cast<unsigned char*>(plainTextArray.data()),
+            ciphertext,
+            ciphertext_len,
+            nonce,
+            key.data()) != 0)
+    {
+        qDebug() << "Erro na descriptografia da senha.";
+        return QString(" ");
+    }
+
+    // Converto o QByteArray de volta para QString
+    QString senha = QString::fromUtf8(plainTextArray);
+
+    return senha;
 }
 
 const bool ConexaoBD::adicionarTag(QString usuario, QString tag)

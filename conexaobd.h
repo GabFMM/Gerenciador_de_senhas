@@ -43,11 +43,26 @@ public:
     const bool existeTituloConta(QString usuario, QString titulo);
     const bool adicionarConta(QString usuario, QString titulo, QString senha, QString descricao = "", QString tag = "");
     const bool removerConta(QString usuario, QString titulo);
+
+    // Tag
     std::vector<QString> getTags(QString usuario);
-    std::vector<QString> getTituloContas(QString usuario);
-    std::vector<QString> getTituloContas(QString usuario, QString tag);
+    QString getTag(QString usuario, QString titulo);
     const bool adicionarTag(QString usuario, QString tag);
     const bool removerTag(QString usuario, QString tag);
+    // --
+
+    // Titulo
+    std::vector<QString> getTituloContas(QString usuario);
+    std::vector<QString> getTituloContas(QString usuario, QString tag);
+    // --
+
+    // Descricao
+    QString getDescricao(QString usuario, QString titulo);
+    // --
+
+    // Senha
+    QString getSenhaConta(QString usuario, QString titulo);
+    // --
 };
 
 #endif // CONEXAOBD_H

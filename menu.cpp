@@ -127,20 +127,19 @@ void Menu::configurarRC()
     ui->TituloRC->clear();
     ui->SenhaRC->clear();
     ui->DescricaoRC->clear();
+    ui->TagRC->clear();
 
     // limpo os combos box's para caso haja atualizacoes no banco de dados
-    ui->TagRC->clear();
     ui->SelecTituloRC->clear();
     ui->SelecTagRC->clear();
 
-    // Preencho os combos box's das tags existentes
+    // Preencho o combo box das tags existentes
     ui->SelecTagRC->addItem("Selecione uma tag:");
 
     std::vector<QString> tags = conexao->getTags(usuario);
     size_t tam = tags.size();
     for(size_t i = 0; i < tam; i++){
         ui->SelecTagRC->addItem(tags[i]);
-        ui->TagRC->addItem(tags[i]);
     }
 
     // Preencho o combo box do titulo das contas
@@ -323,18 +322,16 @@ void Menu::on_BotaoConfirmarAC_clicked()
 void Menu::on_BotaoConfirmaEC_clicked()
 {
     // Verifico o comboBox do titulo das contas
-    if(ui->SelecTituloEC->currentIndex() == 0){
+    if(ui->SelecTituloEC->currentIndex() <= 0){
         QMessageBox::warning(this, "Erro", "Nenhuma conta foi selecionada");
         return;
     }
     // Verifico os campos
     if(ui->TituloAC->text().isEmpty()){
         QMessageBox::warning(this, "Erro", "Campo título não preenchido");
-        return;
     }
     else if(ui->SenhaAC->text().isEmpty()){
         QMessageBox::warning(this, "Erro", "Campo senha não preenchido");
-        return;
     }
 }
 
@@ -342,9 +339,18 @@ void Menu::on_BotaoConfirmaEC_clicked()
 void Menu::on_BotaoConfirmaRC_clicked()
 {
     // Verifico o comboBox do titulo das contas
-    if(ui->SelecTituloEC->currentIndex() == 0){
+    if(ui->SelecTituloRC->currentIndex() <= 0){
         QMessageBox::warning(this, "Erro", "Nenhuma conta foi selecionada");
         return;
+    }
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    if(!conexao->removerConta(usuario, ui->TituloRC->text())){
+        QMessageBox::warning(this, "Erro", "Não foi possível remover conta");
+    }
+    else{
+        QMessageBox::information(this, "Sucesso", "Conta removida");
+        configurarWidgets();
     }
 }
 
@@ -444,7 +450,7 @@ void Menu::on_BotaoConfirmarAT_clicked()
 void Menu::on_BotaoConfirmaRT_clicked()
 {
     // Verifico se foi selecionada uma tag
-    if(ui->SelecTagRT->currentIndex() == 0){
+    if(ui->SelecTagRT->currentIndex() <= 0){
         QMessageBox::warning(this, "Erro", "Não foi selecionada uma tag");
         return;
     }
@@ -482,7 +488,7 @@ void Menu::on_SelecTagRC_currentTextChanged(const QString &arg1)
     std::vector<QString> titulos;
 
     // Texto padrao, entao sem filtro
-    if(!ui->SelecTagRC->currentIndex()){
+    if(ui->SelecTagRC->currentIndex() <= 0){
         titulos = conexao->getTituloContas(usuario);
     }
     else{
@@ -495,3 +501,21 @@ void Menu::on_SelecTagRC_currentTextChanged(const QString &arg1)
         ui->SelecTituloRC->addItem(titulos[i]);
 }
 
+
+void Menu::on_SelecTituloRC_currentTextChanged(const QString &arg1)
+{
+    if(ui->SelecTituloRC->currentIndex() <= 0){
+        ui->TituloRC->clear();
+        ui->SenhaRC->clear();
+        ui->DescricaoRC->clear();
+        ui->TagRC->clear();
+        return;
+    }
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+
+    ui->TituloRC->setText(arg1);
+    ui->SenhaRC->setText(conexao->getSenhaConta(usuario, arg1));
+    ui->DescricaoRC->setText(conexao->getDescricao(usuario, arg1));
+    ui->TagRC->setText(conexao->getTag(usuario, arg1));
+}
