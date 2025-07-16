@@ -61,7 +61,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Padrao"/>
      <widget class="QWidget" name="MostrarContas">
@@ -83,7 +83,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="SelecTituloEC_2">
+          <widget class="QComboBox" name="SelecTituloMC">
            <item>
             <property name="text">
              <string>Selecione um título de uma conta:</string>
@@ -110,8 +110,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>110</width>
-            <height>32</height>
+            <width>350</width>
+            <height>199</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -259,6 +259,59 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </widget>
      <widget class="QWidget" name="EditarConta">
       <layout class="QFormLayout" name="formLayout_2">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Título:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="TituloEC"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Senha:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="SenhaEC"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Descrição:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QTextEdit" name="DescricaoEC"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Tag:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPushButton" name="BotaoConfirmaEC">
+         <property name="text">
+          <string>Confirmar edição</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="SelecTituloEC">
+         <item>
+          <property name="text">
+           <string>Selecione um título de uma conta:</string>
+          </property>
+         </item>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QComboBox" name="SelecTagEC">
          <item>
@@ -273,78 +326,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </item>
         </widget>
        </item>
-       <item row="0" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QComboBox" name="SelecTituloEC">
-           <item>
-            <property name="text">
-             <string>Selecione um título de uma conta:</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="BotaoFiltrarEC">
-           <property name="text">
-            <string>Filtrar</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Título:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="TituloEC"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Senha:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="SenhaEC"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Descrição:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QTextEdit" name="DescricaoEC"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Tag:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QComboBox" name="TagEC">
-         <item>
-          <property name="text">
-           <string>Selecione uma opção:</string>
-          </property>
-         </item>
-        </widget>
-       </item>
        <item row="5" column="1">
-        <widget class="QPushButton" name="BotaoConfirmaEC">
-         <property name="text">
-          <string>Confirmar edição</string>
-         </property>
-        </widget>
+        <widget class="QComboBox" name="TagEC"/>
        </item>
       </layout>
      </widget>
@@ -660,13 +643,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>NomeTagNova</tabstop>
   <tabstop>BotaoConfirmarAT</tabstop>
   <tabstop>SelecTagEC_2</tabstop>
-  <tabstop>SelecTituloEC_2</tabstop>
+  <tabstop>SelecTituloMC</tabstop>
   <tabstop>BotaoFiltrarMC</tabstop>
-  <tabstop>BotaoFiltrarEC</tabstop>
   <tabstop>TituloEC</tabstop>
   <tabstop>SenhaEC</tabstop>
   <tabstop>DescricaoEC</tabstop>
-  <tabstop>TagEC</tabstop>
   <tabstop>BotaoConfirmaEC</tabstop>
   <tabstop>TituloRC</tabstop>
   <tabstop>SenhaRC</tabstop>
@@ -680,9 +661,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>checkBoxExtras</tabstop>
   <tabstop>SenhaGerada</tabstop>
   <tabstop>toolButton</tabstop>
-  <tabstop>SelecTituloEC</tabstop>
   <tabstop>scrollArea</tabstop>
-  <tabstop>SelecTagEC</tabstop>
   <tabstop>SelecTagRT</tabstop>
   <tabstop>BotaoConfirmaRT</tabstop>
   <tabstop>BotaoSair</tabstop>

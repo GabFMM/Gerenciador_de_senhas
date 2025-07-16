@@ -80,6 +80,10 @@ private slots:
 
     void on_SelecTituloRC_currentTextChanged(const QString &arg1);
 
+    void on_SelecTagEC_currentTextChanged(const QString &arg1);
+
+    void on_SelecTituloEC_currentTextChanged(const QString &arg1);
+
 private:
     Ui::Menu *ui;
 

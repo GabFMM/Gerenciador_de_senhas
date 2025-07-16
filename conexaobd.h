@@ -43,6 +43,7 @@ public:
     const bool existeTituloConta(QString usuario, QString titulo);
     const bool adicionarConta(QString usuario, QString titulo, QString senha, QString descricao = "", QString tag = "");
     const bool removerConta(QString usuario, QString titulo);
+    const bool editarConta(QString usuario, QString tituloOriginal, QString tituloEditado, QString senha, QString descricao, QString tag);
 
     // Tag
     std::vector<QString> getTags(QString usuario);

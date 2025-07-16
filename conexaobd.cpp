@@ -235,6 +235,61 @@ const bool ConexaoBD::removerConta(QString usuario, QString titulo)
     return true;
 }
 
+const bool ConexaoBD::editarConta(QString usuario, QString tituloOriginal, QString tituloEditado, QString senha, QString descricao, QString tag)
+{
+    // Gero um nonce
+    unsigned char nonce[crypto_secretbox_NONCEBYTES];
+    randombytes_buf(nonce, sizeof(nonce));
+
+    // Criptografo a senha
+    size_t cipher_len = crypto_secretbox_MACBYTES + senha.size();
+    unsigned char ciphertext[cipher_len];
+
+    QByteArray plainTextArray = senha.toUtf8();
+
+    if (crypto_secretbox_easy(
+            ciphertext,
+            reinterpret_cast<const unsigned char*>(plainTextArray.constData()),
+            plainTextArray.size(),
+            nonce,
+            key.data()) != 0) {
+        qDebug() << "Erro na criptografia da senha.";
+        return false;
+    }
+
+    // converto o nonce para o tipo aceito no BD (BLOB)
+    QByteArray nonceArray(reinterpret_cast<const char*>(nonce), crypto_secretbox_NONCEBYTES);
+
+    // converto o ciphertext para o tipo aceito no BD (BLOB)
+    QByteArray cipherTextArray(reinterpret_cast<const char*>(ciphertext), cipher_len);
+
+    // Salvo no BD
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        UPDATE Contas
+        SET Titulo=?, Senha=?, Nonce=?, Descricao=?, Tag=?
+        WHERE Usuario=? AND Titulo=?
+    )");
+
+    query.addBindValue(tituloEditado);
+    query.addBindValue(cipherTextArray);
+    query.addBindValue(nonceArray);
+    query.addBindValue(descricao);
+    query.addBindValue(tag);
+    query.addBindValue(usuario);
+    query.addBindValue(tituloOriginal);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em editarConta de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
 std::vector<QString> ConexaoBD::getTags(QString usuario)
 {
     QSqlQuery query(BD);

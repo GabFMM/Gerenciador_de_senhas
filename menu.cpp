@@ -116,6 +116,37 @@ void Menu::configurarEC()
     // --
     connect(ui->DescricaoEC, SIGNAL(textChanged()), this, SLOT(limitarTexto()));
     ui->DescricaoEC->setPlaceholderText("Máximo de 100 caracteres.");
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+
+    // limpo as caixas de texto
+    ui->TituloEC->clear();
+    ui->SenhaEC->clear();
+    ui->DescricaoEC->clear();
+
+    // limpo os combos box's para caso haja atualizacoes no banco de dados
+    ui->SelecTituloEC->clear();
+    ui->SelecTagEC->clear();
+    ui->TagEC->clear();
+
+    // Preencho os combos box's das tags existentes
+    ui->SelecTagEC->addItem("Selecione uma tag:");
+
+    std::vector<QString> tags = conexao->getTags(usuario);
+    size_t tam = tags.size();
+    for(size_t i = 0; i < tam; i++){
+        ui->SelecTagEC->addItem(tags[i]);
+        ui->TagEC->addItem(tags[i]);
+    }
+
+    // Preencho o combo box do titulo das contas
+    ui->SelecTituloEC->addItem("Selecione um título de uma conta:");
+
+    std::vector<QString> titulos = conexao->getTituloContas(usuario);
+    tam = titulos.size();
+    for(size_t i = 0; i < tam; i++){
+        ui->SelecTituloEC->addItem(titulos[i]);
+    }
 }
 
 // Configura o widget referente a opcao remover conta (RC)
@@ -326,12 +357,30 @@ void Menu::on_BotaoConfirmaEC_clicked()
         QMessageBox::warning(this, "Erro", "Nenhuma conta foi selecionada");
         return;
     }
-    // Verifico os campos
-    if(ui->TituloAC->text().isEmpty()){
+    // Verifico os campos obrigatorios
+    if(ui->TituloEC->text().isEmpty()){
         QMessageBox::warning(this, "Erro", "Campo título não preenchido");
+        return;
     }
-    else if(ui->SenhaAC->text().isEmpty()){
+    if(ui->SenhaEC->text().isEmpty()){
         QMessageBox::warning(this, "Erro", "Campo senha não preenchido");
+        return;
+    }
+
+    // altero o BD
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    if(!conexao->editarConta(
+        usuario,
+        ui->SelecTituloEC->currentText(),
+        ui->TituloEC->text(),
+        ui->SenhaEC->text(),
+        ui->DescricaoEC->toPlainText(),
+        ui->TagEC->currentText())){
+        QMessageBox::warning(this, "Erro", "Não foi possível editar conta");
+    }
+    else{
+        QMessageBox::information(this, "Sucesso", "Conta editada");
+        configurarWidgets();
     }
 }
 
@@ -519,3 +568,44 @@ void Menu::on_SelecTituloRC_currentTextChanged(const QString &arg1)
     ui->DescricaoRC->setText(conexao->getDescricao(usuario, arg1));
     ui->TagRC->setText(conexao->getTag(usuario, arg1));
 }
+
+void Menu::on_SelecTagEC_currentTextChanged(const QString &arg1)
+{
+    ui->SelecTituloEC->clear();
+    ui->SelecTituloEC->addItem("Selecione um título de uma conta:");
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    std::vector<QString> titulos;
+
+    // Texto padrao, entao sem filtro
+    if(ui->SelecTagEC->currentIndex() <= 0){
+        titulos = conexao->getTituloContas(usuario);
+    }
+    // filtro os titulos com a tag selecionada
+    else{
+        titulos = conexao->getTituloContas(usuario, arg1);
+    }
+
+    size_t tam = titulos.size();
+    for(size_t i = 0; i < tam; i++)
+        ui->SelecTituloEC->addItem(titulos[i]);
+}
+
+
+void Menu::on_SelecTituloEC_currentTextChanged(const QString &arg1)
+{
+    if(ui->SelecTituloEC->currentIndex() <= 0){
+        ui->TituloEC->clear();
+        ui->SenhaEC->clear();
+        ui->DescricaoEC->clear();
+        return;
+    }
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+
+    ui->TituloEC->setText(arg1);
+    ui->SenhaEC->setText(conexao->getSenhaConta(usuario, arg1));
+    ui->DescricaoEC->setText(conexao->getDescricao(usuario, arg1));
+    ui->TagEC->setCurrentText(conexao->getTag(usuario, arg1));
+}
+
