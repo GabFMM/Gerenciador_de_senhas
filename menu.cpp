@@ -583,9 +583,8 @@ void Menu::on_SelecTagMC_textActivated(const QString &arg1)
         titulos = conexao->getTituloContas(usuario, arg1);
     }
 
-    size_t tam = titulos.size();
-    for(size_t i = 0; i < tam; i++)
-        ui->SelecTagMC->addItem(titulos[i]);
+    // mostro as contas com o titulo selecionado
+
 }
 
 

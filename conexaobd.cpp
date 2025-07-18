@@ -451,9 +451,14 @@ QString ConexaoBD::getSenhaConta(QString usuario, QString titulo)
     QByteArray cipherTextArray = query.value(0).toByteArray();
     QByteArray nonceArray = query.value(1).toByteArray();
 
+    return descriptografar(cipherTextArray, nonceArray);
+}
+
+QString ConexaoBD::descriptografar(QByteArray senhaArray, QByteArray nonceArray)
+{
     // Dados para descriptografia
-    const unsigned char* ciphertext = reinterpret_cast<const unsigned char*>(cipherTextArray.constData());
-    unsigned long long ciphertext_len = cipherTextArray.size();
+    const unsigned char* ciphertext = reinterpret_cast<const unsigned char*>(senhaArray.constData());
+    unsigned long long ciphertext_len = senhaArray.size();
 
     const unsigned char* nonce = reinterpret_cast<const unsigned char*>(nonceArray.constData());
 
@@ -474,9 +479,78 @@ QString ConexaoBD::getSenhaConta(QString usuario, QString titulo)
     }
 
     // Converto o QByteArray de volta para QString
-    QString senha = QString::fromUtf8(plainTextArray);
+    return (QString::fromUtf8(plainTextArray));
+}
 
-    return senha;
+std::vector<Conta> ConexaoBD::getContas(QString usuario)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Titulo, Senha, Nonce, Descricao, Tag FROM Contas
+        WHERE Usuario = ?
+    )");
+
+    query.addBindValue(usuario);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getContas de ConexaoBD: " << query.lastError().text();
+        std::vector<Conta> erro;
+        erro.clear();
+        return erro;
+    }
+
+    std::vector<Conta> contas;
+    while(query.next()){
+        Conta conta(
+            query.value(0).toString(),
+            descriptografar(query.value(1).toByteArray(), query.value(2).toByteArray()),
+            query.value(3).toString(),
+            query.value(4).toString()
+        );
+
+        contas.push_back(conta);
+    }
+
+    return contas;
+}
+
+std::vector<Conta> ConexaoBD::getContas(QString usuario, QString tag)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        SELECT Titulo, Senha, Nonce, Descricao, Tag FROM Contas
+        WHERE Usuario = ? AND Tag = ?
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(tag);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em getContas de ConexaoBD: " << query.lastError().text();
+        std::vector<Conta> erro;
+        erro.clear();
+        return erro;
+    }
+
+    std::vector<Conta> contas;
+    while(query.next()){
+        Conta conta(
+            query.value(0).toString(),
+            descriptografar(query.value(1).toByteArray(), query.value(2).toByteArray()),
+            query.value(3).toString(),
+            query.value(4).toString()
+        );
+
+        contas.push_back(conta);
+    }
+
+    return contas;
 }
 
 const bool ConexaoBD::adicionarTag(QString usuario, QString tag)

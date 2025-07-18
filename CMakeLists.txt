@@ -16,6 +16,7 @@ qt_add_executable(Gerenciador_de_senhas
     menu.ui
     conexaobd.h
     conexaobd.cpp
+    conta.h conta.cpp
 )
 
 target_link_libraries(Gerenciador_de_senhas

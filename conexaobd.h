@@ -1,6 +1,9 @@
 #ifndef CONEXAOBD_H
 #define CONEXAOBD_H
 
+// Projeto
+#include "conta.h"
+
 // Qt
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -63,6 +66,12 @@ public:
 
     // Senha
     QString getSenhaConta(QString usuario, QString titulo);
+    QString descriptografar(QByteArray senhaArray, QByteArray nonceArray);
+    // --
+
+    // Conta
+    std::vector<Conta> getContas(QString usuario);
+    std::vector<Conta> getContas(QString usuario, QString tag);
     // --
 };
 
