@@ -76,13 +76,15 @@ private slots:
 
     void on_BotaoConfirmaRT_clicked();
 
-    void on_SelecTagRC_currentTextChanged(const QString &arg1);
+    void on_SelecTituloEC_textActivated(const QString &arg1);
 
-    void on_SelecTituloRC_currentTextChanged(const QString &arg1);
+    void on_SelecTituloRC_textActivated(const QString &arg1);
 
-    void on_SelecTagEC_currentTextChanged(const QString &arg1);
+    void on_SelecTagMC_textActivated(const QString &arg1);
 
-    void on_SelecTituloEC_currentTextChanged(const QString &arg1);
+    void on_SelecTagEC_textActivated(const QString &arg1);
+
+    void on_SelecTagRC_textActivated(const QString &arg1);
 
 private:
     Ui::Menu *ui;

@@ -528,30 +528,26 @@ void Menu::on_BotaoConfirmaRT_clicked()
     }
 }
 
-void Menu::on_SelecTagRC_currentTextChanged(const QString &arg1)
+
+void Menu::on_SelecTituloEC_textActivated(const QString &arg1)
 {
-    ui->SelecTituloRC->clear();
-    ui->SelecTituloRC->addItem("Selecione um título de uma conta:");
+    if(ui->SelecTituloEC->currentIndex() <= 0){
+        ui->TituloEC->clear();
+        ui->SenhaEC->clear();
+        ui->DescricaoEC->clear();
+        return;
+    }
 
     ConexaoBD* conexao = ConexaoBD::getInstancia();
-    std::vector<QString> titulos;
 
-    // Texto padrao, entao sem filtro
-    if(ui->SelecTagRC->currentIndex() <= 0){
-        titulos = conexao->getTituloContas(usuario);
-    }
-    else{
-        // filtro os titulos com a tag selecionada
-        titulos = conexao->getTituloContas(usuario, arg1);
-    }
-
-    size_t tam = titulos.size();
-    for(size_t i = 0; i < tam; i++)
-        ui->SelecTituloRC->addItem(titulos[i]);
+    ui->TituloEC->setText(arg1);
+    ui->SenhaEC->setText(conexao->getSenhaConta(usuario, arg1));
+    ui->DescricaoEC->setText(conexao->getDescricao(usuario, arg1));
+    ui->TagEC->setCurrentText(conexao->getTag(usuario, arg1));
 }
 
 
-void Menu::on_SelecTituloRC_currentTextChanged(const QString &arg1)
+void Menu::on_SelecTituloRC_textActivated(const QString &arg1)
 {
     if(ui->SelecTituloRC->currentIndex() <= 0){
         ui->TituloRC->clear();
@@ -569,7 +565,31 @@ void Menu::on_SelecTituloRC_currentTextChanged(const QString &arg1)
     ui->TagRC->setText(conexao->getTag(usuario, arg1));
 }
 
-void Menu::on_SelecTagEC_currentTextChanged(const QString &arg1)
+
+void Menu::on_SelecTagMC_textActivated(const QString &arg1)
+{
+    ui->SelecTagMC->clear();
+    ui->SelecTagMC->addItem("Selecione um título de uma conta:");
+
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+    std::vector<QString> titulos;
+
+    // Texto padrao, entao sem filtro
+    if(ui->SelecTagMC->currentIndex() <= 0){
+        titulos = conexao->getTituloContas(usuario);
+    }
+    // filtro os titulos com a tag selecionada
+    else{
+        titulos = conexao->getTituloContas(usuario, arg1);
+    }
+
+    size_t tam = titulos.size();
+    for(size_t i = 0; i < tam; i++)
+        ui->SelecTagMC->addItem(titulos[i]);
+}
+
+
+void Menu::on_SelecTagEC_textActivated(const QString &arg1)
 {
     ui->SelecTituloEC->clear();
     ui->SelecTituloEC->addItem("Selecione um título de uma conta:");
@@ -592,20 +612,25 @@ void Menu::on_SelecTagEC_currentTextChanged(const QString &arg1)
 }
 
 
-void Menu::on_SelecTituloEC_currentTextChanged(const QString &arg1)
+void Menu::on_SelecTagRC_textActivated(const QString &arg1)
 {
-    if(ui->SelecTituloEC->currentIndex() <= 0){
-        ui->TituloEC->clear();
-        ui->SenhaEC->clear();
-        ui->DescricaoEC->clear();
-        return;
-    }
+    ui->SelecTituloRC->clear();
+    ui->SelecTituloRC->addItem("Selecione um título de uma conta:");
 
     ConexaoBD* conexao = ConexaoBD::getInstancia();
+    std::vector<QString> titulos;
 
-    ui->TituloEC->setText(arg1);
-    ui->SenhaEC->setText(conexao->getSenhaConta(usuario, arg1));
-    ui->DescricaoEC->setText(conexao->getDescricao(usuario, arg1));
-    ui->TagEC->setCurrentText(conexao->getTag(usuario, arg1));
+    // Texto padrao, entao sem filtro
+    if(ui->SelecTagRC->currentIndex() <= 0){
+        titulos = conexao->getTituloContas(usuario);
+    }
+    else{
+        // filtro os titulos com a tag selecionada
+        titulos = conexao->getTituloContas(usuario, arg1);
+    }
+
+    size_t tam = titulos.size();
+    for(size_t i = 0; i < tam; i++)
+        ui->SelecTituloRC->addItem(titulos[i]);
 }
 
