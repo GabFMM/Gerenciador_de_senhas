@@ -604,6 +604,4 @@ void ConexaoBD::setBD()
 
     if (!BD.open())
         qDebug() << "Erro ao abrir banco:" << BD.lastError().text();
-    else
-        qDebug() << "Banco aberto com sucesso";
 }
