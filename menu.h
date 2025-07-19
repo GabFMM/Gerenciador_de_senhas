@@ -4,6 +4,7 @@
 // Projeto
 #include "conexaobd.h"
 #include "conta.h"
+#include "contawidget.h"
 
 // Qt
 #include <QDialog>
@@ -97,6 +98,8 @@ private:
 
     QTimer* tempo;
     int segundosRestantes;
+
+    QVBoxLayout* layout;
 };
 
 #endif // MENU_H

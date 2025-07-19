@@ -61,7 +61,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="Padrao"/>
      <widget class="QWidget" name="MostrarContas">
@@ -95,7 +95,7 @@
             <x>0</x>
             <y>0</y>
             <width>350</width>
-            <height>176</height>
+            <height>199</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -571,13 +571,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QToolButton" name="toolButton_3">
-     <property name="text">
-      <string>...</string>
-     </property>
     </widget>
    </item>
    <item>

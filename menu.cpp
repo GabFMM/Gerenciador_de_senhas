@@ -40,6 +40,8 @@ Menu::Menu(QWidget *parent, QString usuario)
     tempo->start(1000);
 
     // outros
+    layout = new QVBoxLayout(ui->WidgetContainer);
+    ui->WidgetContainer->setLayout(layout);
     setWindowTitle("Menu");
     setMouseTracking(true); // importante para o temporizador da janela
     ui->stackedWidget->setCurrentIndex(0);
@@ -52,6 +54,12 @@ Menu::~Menu()
         delete tempo;
         tempo = nullptr;
     }
+
+    if(layout != nullptr){
+        delete layout;
+        layout = nullptr;
+    }
+
     delete ui;
 }
 
@@ -584,12 +592,21 @@ void Menu::on_SelecTagMC_textActivated(const QString &arg1)
     }
 
     // mostro as contas com o titulo selecionado
-    //QVBoxLayout* layout = new QVBoxLayout(ui->WidgetContainer);
 
-    size_t tam = contas.size();
-    for(int i = 0; i < tam; i++){
-
+    // mas antes devo deletar as contas que ja foram incluidas no layout anteriormente
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr)
+    {
+        if (QWidget* widget = item->widget()) {
+            widget->deleteLater(); // remove da ui e agenda para destruição segura
+        }
+        delete item; // remove o layout item em si
     }
+
+    // incluio as novas contas selecionadas
+    size_t tam = contas.size();
+    for(int i = 0; i < tam; i++)
+        layout->addWidget(new ContaWidget(contas[i], this));
 }
 
 

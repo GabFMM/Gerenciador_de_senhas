@@ -50,9 +50,14 @@ void ContaWidget::configuraLabels()
 {
     _titulo->setText(_conta.getTitulo());
     _senha->setText("Senha: ********");
+
+    _layout->addWidget(_titulo);
+    _layout->addWidget(_senha);
 }
 
 void ContaWidget::configuraCheckBox()
 {
     _opcaoVerSenha->setText("Ver senha");
+
+    _layout->addWidget(_opcaoVerSenha);
 }
