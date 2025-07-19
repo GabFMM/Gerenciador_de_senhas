@@ -624,6 +624,12 @@ void Menu::on_SelecTagEC_textActivated(const QString &arg1)
 
 void Menu::on_SelecTagRC_textActivated(const QString &arg1)
 {
+    // Seguranca
+    ui->TituloRC->clear();
+    ui->SenhaRC->clear();
+    ui->DescricaoRC->clear();
+    ui->TagRC->clear();
+
     ui->SelecTituloRC->clear();
     ui->SelecTituloRC->addItem("Selecione um título de uma conta:");
 
