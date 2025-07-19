@@ -42,6 +42,7 @@ public:
     void configurarAC();
     void configurarEC();
     void configurarRC();
+    void configurarMC();
     void configurarAT();
     void configurarRT();
     void configurarWidgets();

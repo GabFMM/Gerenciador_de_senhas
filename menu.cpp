@@ -191,6 +191,32 @@ void Menu::configurarRC()
     }
 }
 
+void Menu::configurarMC()
+{
+    ConexaoBD* conexao = ConexaoBD::getInstancia();
+
+    // Limpo o combo box das tags caso ocorra uma mudanca no BD
+    ui->SelecTagMC->clear();
+
+    // Preencho o combo box das tags
+    ui->SelecTagMC->addItem("Selecione uma tag:");
+
+    std::vector<QString> tags = conexao->getTags(usuario);
+    size_t tam = tags.size();
+    for(size_t i = 0; i < tam; i++)
+        ui->SelecTagMC->addItem(tags[i]);
+
+    // Limpo o widgetContainer
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr)
+    {
+        if (QWidget* widget = item->widget()) {
+            widget->deleteLater(); // remove da ui e agenda para destruição segura
+        }
+        delete item; // remove o layout item em si
+    }
+}
+
 // Configura o widget referente a opcao adicionar tag (AT)
 void Menu::configurarAT()
 {
@@ -230,6 +256,7 @@ void Menu::configurarWidgets()
     configurarAC();
     configurarEC();
     configurarRC();
+    configurarMC();
     configurarAT();
     configurarRT();
 }
@@ -576,9 +603,6 @@ void Menu::on_SelecTituloRC_textActivated(const QString &arg1)
 
 void Menu::on_SelecTagMC_textActivated(const QString &arg1)
 {
-    ui->SelecTagMC->clear();
-    ui->SelecTagMC->addItem("Selecione um título de uma conta:");
-
     ConexaoBD* conexao = ConexaoBD::getInstancia();
     std::vector<Conta> contas;
 
