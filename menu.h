@@ -1,7 +1,9 @@
 #ifndef MENU_H
 #define MENU_H
 
+// Projeto
 #include "conexaobd.h"
+#include "conta.h"
 
 // Qt
 #include <QDialog>
@@ -10,6 +12,8 @@
 #include <QTimer>
 #include <QTextEdit>
 #include <QClipboard>
+#include <QVBoxLayout>
+#include <QLabel>
 
 // Outros
 #include <random>

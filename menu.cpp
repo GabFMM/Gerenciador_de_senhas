@@ -572,19 +572,24 @@ void Menu::on_SelecTagMC_textActivated(const QString &arg1)
     ui->SelecTagMC->addItem("Selecione um título de uma conta:");
 
     ConexaoBD* conexao = ConexaoBD::getInstancia();
-    std::vector<QString> titulos;
+    std::vector<Conta> contas;
 
     // Texto padrao, entao sem filtro
     if(ui->SelecTagMC->currentIndex() <= 0){
-        titulos = conexao->getTituloContas(usuario);
+        contas = conexao->getContas(usuario);
     }
     // filtro os titulos com a tag selecionada
     else{
-        titulos = conexao->getTituloContas(usuario, arg1);
+        contas = conexao->getContas(usuario, arg1);
     }
 
     // mostro as contas com o titulo selecionado
+    //QVBoxLayout* layout = new QVBoxLayout(ui->WidgetContainer);
 
+    size_t tam = contas.size();
+    for(int i = 0; i < tam; i++){
+
+    }
 }
 
 
