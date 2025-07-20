@@ -8,9 +8,3 @@
   Dados são registrados no Banco de Dados SQLite.<br>
   Função hash e criptografia simétrica são importados da biblioteca externa libsodium.<br>
 </p>
-
-<h2>Desafios atuais:</h2>
-<ul>
-  <li>Terminar as funções do gerenciador;
-  <li>Permitir uso multiusuário;
-</ul>
