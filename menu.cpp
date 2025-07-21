@@ -691,3 +691,36 @@ void Menu::on_SelecTagRC_textActivated(const QString &arg1)
         ui->SelecTituloRC->addItem(titulos[i]);
 }
 
+
+void Menu::on_BotaoExcluirUsuario_clicked()
+{
+    // Cria mensagem de confirmação
+    QMessageBox::StandardButton resposta;
+
+    resposta = QMessageBox::question(
+        this,
+        "Confirmar ação",
+        "Ao excluir seu usuário todos os seus dados serão apagados. Confirma sua ação?",
+        QMessageBox::Yes|QMessageBox::No
+        );
+
+    // Excluo usuario
+    if(resposta == QMessageBox::Yes){
+        ConexaoBD* conexao = ConexaoBD::getInstancia();
+
+        if(!conexao->excluirUsuario(usuario)){
+            QMessageBox::warning(this, "Erro", "Não foi possível excluir usuário");
+            return;
+        }
+        else{
+            QMessageBox::information(this, "Sucesso", "Seu usuário foi removido");
+
+            // Limpo atributo
+            usuario.clear();
+
+            // Volto para a janela de login
+            close();
+        }
+    }
+}
+

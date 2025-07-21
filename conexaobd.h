@@ -47,6 +47,7 @@ public:
     const bool adicionarConta(QString usuario, QString titulo, QString senha, QString descricao = "", QString tag = "");
     const bool removerConta(QString usuario, QString titulo);
     const bool editarConta(QString usuario, QString tituloOriginal, QString tituloEditado, QString senha, QString descricao, QString tag);
+    const bool excluirUsuario(QString usuario);
 
     // Tag
     std::vector<QString> getTags(QString usuario);

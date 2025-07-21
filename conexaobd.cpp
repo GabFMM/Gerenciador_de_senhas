@@ -290,6 +290,27 @@ const bool ConexaoBD::editarConta(QString usuario, QString tituloOriginal, QStri
     return true;
 }
 
+const bool ConexaoBD::excluirUsuario(QString usuario)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        DELETE FROM Usuarios, Contas, Tags
+        WHERE Usuario = ?
+    )");
+
+    query.addBindValue(usuario);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em excluirUsuario de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
 std::vector<QString> ConexaoBD::getTags(QString usuario)
 {
     QSqlQuery query(BD);

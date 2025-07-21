@@ -92,6 +92,8 @@ private slots:
 
     void on_SelecTagRC_textActivated(const QString &arg1);
 
+    void on_BotaoExcluirUsuario_clicked();
+
 private:
     Ui::Menu *ui;
 
