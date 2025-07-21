@@ -294,35 +294,29 @@ const bool ConexaoBD::excluirUsuario(QString usuario)
 {
     QSqlQuery query(BD);
 
-    query.prepare
-        (R"(
-        DELETE FROM Usuarios
-        WHERE Nome = ?
-    )");
-
+    query.prepare("DELETE FROM Contas WHERE Usuario = ?");
     query.addBindValue(usuario);
-
-    if(!query.exec())
-    {
-        qDebug() << "Erro na execução da query em excluirUsuario de ConexaoBD: " << query.lastError().text();
+    if (!query.exec()) {
+        qDebug() << "Erro ao excluir contas:" << query.lastError().text();
         return false;
     }
 
-    query.prepare
-    (R"(
-        DELETE FROM Contas, Tags
-        WHERE Usuario = ?
-    )");
-
+    query.prepare("DELETE FROM Tags WHERE Usuario = ?");
     query.addBindValue(usuario);
+    if (!query.exec()) {
+        qDebug() << "Erro ao excluir tags:" << query.lastError().text();
+        return false;
+    }
 
-    if(!query.exec())
-    {
-        qDebug() << "Erro na execução da query em excluirUsuario de ConexaoBD: " << query.lastError().text();
+    query.prepare("DELETE FROM Usuarios WHERE Nome = ?");
+    query.addBindValue(usuario);
+    if (!query.exec()) {
+        qDebug() << "Erro ao excluir usuário:" << query.lastError().text();
         return false;
     }
 
     return true;
+
 }
 
 const bool ConexaoBD::criarUsuario(QString usuario, QString senha)
