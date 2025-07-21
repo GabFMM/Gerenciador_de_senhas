@@ -295,12 +295,49 @@ const bool ConexaoBD::excluirUsuario(QString usuario)
     QSqlQuery query(BD);
 
     query.prepare
+        (R"(
+        DELETE FROM Usuarios
+        WHERE Nome = ?
+    )");
+
+    query.addBindValue(usuario);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em excluirUsuario de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    query.prepare
     (R"(
-        DELETE FROM Usuarios, Contas, Tags
+        DELETE FROM Contas, Tags
         WHERE Usuario = ?
     )");
 
     query.addBindValue(usuario);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erro na execução da query em excluirUsuario de ConexaoBD: " << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+const bool ConexaoBD::criarUsuario(QString usuario, QString senha)
+{
+    QSqlQuery query(BD);
+
+    query.prepare
+    (R"(
+        INSERT INTO Usuarios (Nome, Senha, Salt)
+        VALUES (?,?,?)
+    )");
+
+    query.addBindValue(usuario);
+    query.addBindValue(gerarSenhaHash(senha));
+    query.addBindValue(gerarSaltAleatorio()); // Salt usado em criptografia simetrica
 
     if(!query.exec())
     {
@@ -616,6 +653,31 @@ const bool ConexaoBD::removerTag(QString usuario, QString tag)
     }
 
     return true;
+}
+
+QByteArray ConexaoBD::gerarSaltAleatorio()
+{
+    QByteArray salt(crypto_pwhash_SALTBYTES, 0);
+    randombytes_buf(salt.data(), salt.size());
+
+    return salt;
+}
+
+QByteArray ConexaoBD::gerarSenhaHash(QString str)
+{
+    char hash[crypto_pwhash_STRBYTES];
+
+    QByteArray strBytes = str.toUtf8();
+
+    if (crypto_pwhash_str(hash,
+                          strBytes.constData(), strBytes.size(),
+                          crypto_pwhash_OPSLIMIT_INTERACTIVE,
+                          crypto_pwhash_MEMLIMIT_INTERACTIVE) != 0) {
+        qDebug() << "Falha ao gerar hash em gerarSenhaHash de ConexaoBD";
+        return QByteArray();  // Retorna vazio se falhar
+    }
+
+    return QByteArray(hash); // Copia até o \0 automaticamente
 }
 
 void ConexaoBD::setBD()

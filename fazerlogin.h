@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "conexaobd.h"
 #include "menu.h"
+#include "criarusuario.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,6 +31,8 @@ private slots:
     void on_BotaoEntrar_clicked();
 
     void on_MostrarSenha_stateChanged(int arg1);
+
+    void on_BotaoCriarUsuario_clicked();
 
 private:
     Ui::FazerLogin *ui;

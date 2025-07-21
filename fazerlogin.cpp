@@ -68,3 +68,13 @@ void FazerLogin::on_MostrarSenha_stateChanged(int arg1)
     else if(arg1 == Qt::Unchecked)
         ui->Senha->setEchoMode(QLineEdit::Password);
 }
+
+void FazerLogin::on_BotaoCriarUsuario_clicked()
+{
+    CriarUsuario criarUsuario(this);
+
+    hide();
+    criarUsuario.exec();
+    show();
+}
+

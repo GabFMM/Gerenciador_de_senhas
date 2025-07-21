@@ -32,6 +32,10 @@ private:
     // key do usuario. NUNCA salvar em heap. SEMPRE limpar da memória
     std::vector<unsigned char> key;
 
+protected:
+    QByteArray gerarSaltAleatorio();
+    QByteArray gerarSenhaHash(QString str);
+
 public:
     void setBD();
 
@@ -43,11 +47,15 @@ public:
 
     const bool verificarSenha(QString usuario, QString senha);
     const bool verificarUsuario(QString usuario);
+    const bool excluirUsuario(QString usuario);
+    const bool criarUsuario(QString usuario, QString senha);
+
+    // Conta
     const bool existeTituloConta(QString usuario, QString titulo);
     const bool adicionarConta(QString usuario, QString titulo, QString senha, QString descricao = "", QString tag = "");
     const bool removerConta(QString usuario, QString titulo);
     const bool editarConta(QString usuario, QString tituloOriginal, QString tituloEditado, QString senha, QString descricao, QString tag);
-    const bool excluirUsuario(QString usuario);
+    // --
 
     // Tag
     std::vector<QString> getTags(QString usuario);
