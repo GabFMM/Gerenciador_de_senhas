@@ -41,3 +41,6 @@ cmake .. -G "MinGW Makefiles"
 mingw32-make
 windeployqt Gerenciador_de_senhas.exe
 Gerenciador_de_senhas.exe
+```
+
+Após isso, será possível executar o gerenciador diretamente pelo .exe ou pelo QtCreator via "cmakelist.txt".
