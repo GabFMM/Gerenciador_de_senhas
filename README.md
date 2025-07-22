@@ -1,12 +1,43 @@
-<h1>Gerenciador_de_senhas</h1>
+# 🗝️ Gerenciador de Senhas
 
-<p>Sistema que permite guardar senhas em um cofre seguro com criptografia e função hash.</p> <br>
-<p>Baseado em C e C++ principalmente.</p><br>
-<p>
-  Para executar o programa, há duas maneiras: compilar via QtCreator, ou rodar o Gerenciador_de_senhas.exe diretamente
-  Compilado via QtCreator 16.0.1 (community) com Qt 6.9.0.<br>
-  Informações sensíveis como senha principal (que acessa o cofre) e senhas de subcontas (guardadas no cofre) são hasheadas e criptografadas respectivamente.<br>
-  Dados são registrados no Banco de Dados SQLite.<br>
-  Função hash e criptografia simétrica são importados da biblioteca externa libsodium.<br>
-</p>
+Sistema que permite guardar senhas em um cofre seguro com criptografia e função hash.
 
+## 🔧 Tecnologias utilizadas
+
+- C e C++ (com Qt 6)
+- SQLite (armazenamento local)
+- Libsodium (criptografia simétrica e hash seguro)
+
+## 🔒 Segurança
+
+- A **senha principal** (usada para abrir o cofre) é **hasheada**.
+- As **senhas das contas** são **criptografadas**.
+- Todas as credenciais são armazenadas em **SQLite** de forma segura.
+
+---
+
+## 🚀 Como compilar e executar no Windows 64 bits
+
+### 📦 Requisitos
+
+- **Qt 6.9.0** com o kit **MinGW 13.1.0 64-bit**
+- **CMake 3.31.5 ou superior**
+- **MinGW** incluso no kit ou instalado separadamente
+
+### 📥 Passo a passo de compilação
+
+1. Crie a pasta `libsodium` na raiz do projeto.
+   - Exemplo: `C:\Gerenciador_de_senhas\libsodium`
+2. Baixe a versão:  
+   [libsodium-1.0.18-mingw.tar.gz](https://download.libsodium.org/libsodium/releases/)
+3. Extraia o conteúdo da pasta `libsodium-win64` e copie os arquivos para a pasta `libsodium` criada acima.
+4. Abra o **terminal do Qt** e execute os seguintes comandos:
+
+```bash
+cd C:\Gerenciador_de_senhas
+mkdir build
+cd build
+cmake .. -G "MinGW Makefiles"
+mingw32-make
+windeployqt Gerenciador_de_senhas.exe
+Gerenciador_de_senhas.exe
