@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.19)
 project(Gerenciador_de_senhas LANGUAGES CXX)
 
+set(CMAKE_AUTOMOC ON)
+
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Sql)
 
 qt_standard_project_setup()
@@ -26,9 +28,7 @@ target_link_libraries(Gerenciador_de_senhas
         Qt::Core
         Qt::Widgets
         Qt::Sql
-)
-
-target_link_libraries(Gerenciador_de_senhas PRIVATE	${CMAKE_CURRENT_SOURCE_DIR}/libsodium/lib/libsodium.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/libsodium/lib/libsodium.a
 )
 
 target_include_directories(Gerenciador_de_senhas PRIVATE

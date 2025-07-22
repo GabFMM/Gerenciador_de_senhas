@@ -1,0 +1,9 @@
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/Gerenciador_de_senhas.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/edit_cache.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/list_install_components.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/install.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/install/local.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/install/strip.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/Gerenciador_de_senhas_autogen_timestamp_deps.dir
+C:/Users/gabri/OneDrive/Área de Trabalho/Gerenciador_de_senhas/build/Meu_Qt_MinGW-Debug/CMakeFiles/Gerenciador_de_senhas_autogen.dir
