@@ -59,8 +59,11 @@ compile_commands.json
 
 # Pasta de build (se estiver no mesmo repositório)
 build*/
+build/
 build-*/
 
+# Libsodium
+libsodium/
 ---
 
 ### Outros ###

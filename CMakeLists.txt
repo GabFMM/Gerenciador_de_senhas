@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.19)
 project(Gerenciador_de_senhas LANGUAGES CXX)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Sql)
 
 qt_standard_project_setup()
@@ -16,9 +21,13 @@ qt_add_executable(Gerenciador_de_senhas
     menu.ui
     conexaobd.h
     conexaobd.cpp
-    conta.h conta.cpp
-    contawidget.h contawidget.cpp
-    criarusuario.h criarusuario.cpp criarusuario.ui
+    conta.h
+    conta.cpp
+    contawidget.h
+    contawidget.cpp
+    criarusuario.h
+    criarusuario.cpp
+    criarusuario.ui
 )
 
 target_link_libraries(Gerenciador_de_senhas
