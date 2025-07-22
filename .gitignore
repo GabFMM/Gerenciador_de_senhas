@@ -4,6 +4,7 @@
 *~
 *.autosave
 *.a
+!libsodium/lib/libsodium.a
 *.core
 *.moc
 *.o

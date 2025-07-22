@@ -316,7 +316,6 @@ const bool ConexaoBD::excluirUsuario(QString usuario)
     }
 
     return true;
-
 }
 
 const bool ConexaoBD::criarUsuario(QString usuario, QString senha)
