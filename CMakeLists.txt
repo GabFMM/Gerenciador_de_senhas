@@ -26,9 +26,7 @@ target_link_libraries(Gerenciador_de_senhas
         Qt::Core
         Qt::Widgets
         Qt::Sql
-)
-
-target_link_libraries(Gerenciador_de_senhas PRIVATE	${CMAKE_CURRENT_SOURCE_DIR}/libsodium/lib/libsodium.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/libsodium/lib/libsodium.a
 )
 
 target_include_directories(Gerenciador_de_senhas PRIVATE

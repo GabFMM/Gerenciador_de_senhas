@@ -1,0 +1,70 @@
+### C++ ###
+# Arquivos de build comuns
+*.d
+
+# Arquivos objeto
+*.slo
+*.lo
+*.o
+*.obj
+
+# Headers pré-compilados
+*.gch
+*.pch
+
+# Bibliotecas compiladas
+*.so
+*.dylib
+*.dll
+*.lai
+*.la
+*.a
+*.lib
+
+# Executáveis
+*.exe
+*.out
+*.app
+
+# Módulos Fortran
+*.mod
+*.smod
+
+---
+
+### Qt Creator ###
+# Arquivos de configuração da IDE
+*.pro.user
+*.creator
+*.creator.user*
+*.autosave
+*.user
+*.user.json
+*.autosave.json
+*.files
+*.includes
+*.config
+*.cflags
+*.cxxflags
+
+---
+
+### CMake ###
+# Diretórios e arquivos temporários
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+compile_commands.json
+
+# Pasta de build (se estiver no mesmo repositório)
+build*/
+build-*/
+
+---
+
+### Outros ###
+# Arquivos de backup comuns
+*~
+*.swp
+*.bak
