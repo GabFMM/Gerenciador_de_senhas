@@ -4,7 +4,7 @@ Sistema que permite guardar senhas em um cofre seguro com criptografia e funçã
 
 ## 🔧 Tecnologias utilizadas
 
-- C e C++ (com Qt 6)
+- C++ (com Qt 6)
 - SQLite (armazenamento local)
 - Libsodium (criptografia simétrica e hash seguro)
 
